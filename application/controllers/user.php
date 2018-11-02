@@ -12,11 +12,13 @@ class User extends CI_Controller {
     function index(){
 		$this->load->view('user/header');
 		$this->load->view('user/footer');
+        $user = array('idUsuario'  => 1);
+        $this->session->set_userdata($user);
+
 		}
 		
     function perfilUsuario(){
-    	$data['id'] = 1;
-    	$data['user'] = $this->sena_model->obtenerUsuario($data['id']);
+        $data['user'] = $this->sena_model->obtenerUsuario($this->session->userdata('idUsuario'));
     	$this->load->view('user/header');
         $this->load->view('user/perfil', $data);
     	$this->load->view('user/footer');
@@ -29,13 +31,12 @@ class User extends CI_Controller {
 	 	'clave' => $this->input->post('clave'),
 	 	'celular' => $this->input->post('celular'));
 
-		$this->sena_model->modificarPerfil(1, $data);
+		$this->sena_model->modificarPerfil($this->session->userdata('idUsuario'), $data);
 		redirect(base_url('/user'));
 	}	
 
 	function cargosUsuario(){
-		$data['id'] = 1;
-    	$data['cargos'] = $this->sena_model->obtenerCargos($data['id']);
+    	$data['cargos'] = $this->sena_model->obtenerCargos($this->session->userdata('idUsuario'));
 		$this->load->view('user/header');
         $this->load->view('user/cargos', $data);
     	$this->load->view('user/footer');
@@ -43,22 +44,51 @@ class User extends CI_Controller {
 
 	function eliminarCargoDeseos(){
        $idCargo = $this->uri->segment(3);
-       $this->sena_model->eliminarCargoUsuario(1,$idCargo);
+       $this->sena_model->eliminarCargoUsuario($this->session->userdata('idUsuario'),$idCargo);
         redirect(base_url('user/cargosUsuario'));
 	}
 
+    function addCursoRuta(){
+        $idCurso = $this->uri->segment(3);
+        if ($this->sena_model->añadirRutaCursos($this->session->userdata('idUsuario'),$idCurso)) {
+             redirect(base_url('user/rutaDeCursos'));
+        }else{
+             echo "<script>
+             if (window.confirm('Este curso ya está en su ruta de cursos, favor intentar con otro.')){
+             window.location = 'http://localhost/sena/user/listaCursos';
+             }
+             </script>";
+        }
+        
+
+    }
+
     function rutaDeCursos(){
-    	$data['id'] = 1;
-    	$data['cursos'] = $this->sena_model->cargarRutaCursos($data['id']);
+		$data['cursos'] = $this->sena_model->cargarRutaCursos($this->session->userdata('idUsuario'));
     	$this->load->view('user/header');
     	$this->load->view('cursos/rutaDeCursos', $data);
     	$this->load->view('user/footer');
     }
 
+    function listaCursos(){
+        $data['cursos'] = $this->sena_model->obtenerCursos();
+        $this->load->view('user/header', $data);
+        $this->load->view('cursos/listaCursos', $data);
+        $this->load->view('user/footer', $data);
+
+    }
+
     function eliminarRutaCurso(){
     	$idCurso = $this->uri->segment(3);
-        $this->sena_model->eliminarRutaCurso(1,$idCurso);
+        $this->sena_model->eliminarRutaCurso($this->session->userdata('idUsuario'),$idCurso);
         redirect(base_url('user/rutaDeCursos'));
+    }
+
+    function cursosRecomendados(){
+        $data['cursos'] = $this->sena_model->cursosRecomendados($this->session->userdata('idUsuario'));
+        $this->load->view('user/header');
+        $this->load->view('cursos/cursosRecomendados', $data);
+        $this->load->view('user/footer');
     }
 	
 	}//end of class

@@ -1,6 +1,3 @@
-
-
-
 <div class="accordion" id="accordionExample">
 
 <?php 
@@ -18,15 +15,8 @@ foreach ($cursos->result() as $curso) {?>
     <div id="collapse<?= $curso->idCurso;?>" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
       <div class="card-body">
         <p><?=$curso->descripcion;?></p>
-        <p>Categoria: <?=$curso->categoria;?></p>
         <p>Horas: <?=$curso->horas;?></p>
-        <p><?php 
-        if ($curso->finalizado == 1) {
-          echo "Estado: Finalizado";
-        }else{
-          echo "Estado: En progreso";
-        }?></p>
-       <center><a href="<?= base_url('user/eliminarRutaCurso/').$curso->idCurso?>" class="btn btn-danger">Eliminar de mi ruta de cursos</a></center>
+       <center><a href="" class=""></a></center>
       </div>
     </div>
   </div>
@@ -37,9 +27,3 @@ foreach ($cursos->result() as $curso) {?>
 ?>
 
 </div>
-
-  
- 
-
-
-

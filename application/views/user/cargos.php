@@ -4,7 +4,7 @@
 foreach ($cargos->result() as $value) {?>
 	
   <br><div class="row">
-  <div class="col-md-4">
+  <div class="col-md-12">
   <div class="card">
   <div class="card-header">
     <center><h5><?=$value->cargo?></h5></center>

@@ -8,7 +8,7 @@ class sena_model extends CI_Model {
   }
 
   function obtenerCursos(){
-    $query = $this->db->get('CursoCortosSena');
+    $query = $this->db->get('cursoscortossena');
     if ($query->num_rows() > 0) {
       return $query;
     }else{
@@ -18,7 +18,7 @@ class sena_model extends CI_Model {
 
   function obtenerCurso($id){
     $this->db->where('idCursoCortoSena', $id);
-    $query = $this->db->get('CursoCortosSena');
+    $query = $this->db->get('cursoscortossena');
     if ($query->num_rows() > 0) {
       return $query;
     }else{
@@ -78,6 +78,31 @@ class sena_model extends CI_Model {
 
   //-----------------   Cursos Usuario --------------------------------
 
+  function verificarCurso($idUser, $idCurso){
+    $consulta = "SELECT * from hojarutacursoscortousuario hoja
+    where hoja.Usuarios_IdUsuario = $idUser and hoja.CursosCortosSena_IdCursoCortoSena = $idCurso";
+    $query = $this->db->query($consulta);
+    if ($query->num_rows() != 0) {
+      return true;
+    }else{
+      return false;
+    }
+  } 
+
+  function añadirRutaCursos($idUser, $idCurso){
+
+    if (!$this->verificarCurso($idUser, $idCurso)) {
+        $datos = array('Usuarios_IdUsuario' => $idUser,
+        'CursosCortosSena_IdCursoCortoSena' => $idCurso, 'FechaRegistro' => date('Y-m-d H:i:s'),
+        'EstadoFinalizado' => 0);
+        $this->db->insert('hojarutacursoscortousuario', $datos);
+        return true;
+    }else{
+        return false;
+    }
+      
+  }
+
   function cargarRutaCursos($idUser){
    $consult = "
     SELECT IdCursoCortoSena idCurso, cu.NombreCursoCorto nombreCurso, cacu.NombreCursoCorto categoria,
@@ -105,8 +130,35 @@ class sena_model extends CI_Model {
     
   	}
 
-  }
+    function cursosRecomendados($id){
+      $consult = "SELECT cs.IdCursoCortoSena idCurso, cs.NombreCursoCorto nombreCurso,
+      cs.DescripcionCorta descripcion, cs.NoHoras horas, cs.RutaImagen url
+      from usuarios u
+      inner join listadeseoscargousuario lu
+        on u.IdUsuario = lu.IdUsuario
+      inner join cargosempresa ce
+        on lu.IdCargoEmpresa = ce.IdCargoEmpresa
+      inner join cursoscortocargo cc
+        on ce.IdCargoEmpresa = cc.IdCargoEmpresa
+      left join cursoscortossena cs
+        on cc.IdCursoCorto = cs.IdCursoCortoSena
+      left join hojarutacursoscortousuario hc
+        on cs.IdCursoCortoSena = hc.CursosCortosSena_IdCursoCortoSena 
+        and hc.Usuarios_IdUsuario = u.IdUsuario
+      where u.IdUsuario = $id
+      and hc.id is null;";
 
+    $query = $this->db->query($consult);
+    if ($query->num_rows() > 0) {
+      return $query;
+    }else{
+      return false;
+    }
 
+    }
+
+  
+
+}
 
  ?>  

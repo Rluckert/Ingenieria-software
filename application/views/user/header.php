@@ -32,9 +32,9 @@
 <li class="nav-item dropdown">
   <a class="nav-link  dropdown-toggle" href="#" data-toggle="dropdown">Cursos&nbsp;<i class="fas fa-book"></i></a>
     <ul class="dropdown-menu">
-    <li><a class="dropdown-item" href="#">Lista de cursos</a></li>
+    <li><a class="dropdown-item" href="<?=base_url('/user/listaCursos');?>">Lista de cursos</a></li>
     <li><a class="dropdown-item" href="<?=base_url('/user/rutaDeCursos/');?>">Mi ruta de cursos</a></li>
-    <li><a class="dropdown-item" href="#">Cursos recomendados</a></li>
+    <li><a class="dropdown-item" href="<?=base_url('/user/cursosRecomendados');?>">Cursos recomendados</a></li>
     </ul>
 </li>
 <li class="nav-item dropdown">
