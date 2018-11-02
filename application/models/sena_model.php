@@ -90,7 +90,7 @@ class sena_model extends CI_Model {
   } 
 
   function añadirRutaCursos($idUser, $idCurso){
-
+    date_default_timezone_set("America/Bogota");
     if (!$this->verificarCurso($idUser, $idCurso)) {
         $datos = array('Usuarios_IdUsuario' => $idUser,
         'CursosCortosSena_IdCursoCortoSena' => $idCurso, 'FechaRegistro' => date('Y-m-d H:i:s'),
