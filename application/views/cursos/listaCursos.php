@@ -1,3 +1,4 @@
+
 <div class="accordion" id="accordionExample">
 
 <?php 
@@ -14,16 +15,27 @@ foreach ($cursos->result() as $curso) {?>
 
     <div id="collapse<?= $curso->IdCursoCortoSena;?>" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
       <div class="card-body">
-        <p><?=$curso->DescripcionCorta;?></p>
+        <div class="row">
+        <div class="col-md-auto"> 
+        <img src="<?= base_url().$curso->url?>" class="img-thumbnail" >
+        
+        </div>
+        <div class="col-md-auto text-center">
+        <br><br>
+        <p><h6><?=$curso->DescripcionCorta;?></h6></p>
+        <p>Categoría: <?= $curso->categoria;?></p>
         <p>Horas: <?=$curso->NoHoras;?></p>
-        <p><?php ?></p>
-       <center><a href="<?= base_url('user/addCursoRuta/').$curso->IdCursoCortoSena?>" class="btn btn-primary">Agregar a mi ruta de cursos</a></center>
+        <a href="<?= base_url('user/addCursoRuta/').$curso->IdCursoCortoSena?>" class="btn btn-primary">Agregar a mi ruta de cursos</a>
+          
+        </div>
+       
+      
+        </div>
       </div>
     </div>
   </div>
 <?php
 }
-
 
 ?>
 

@@ -6,15 +6,16 @@
 	<meta charset="utf-8">
 
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.2/css/all.css" integrity="sha384-/rXc/GQVaYpyDdyxK+ecHPVYJSN9bmVFBvjA/9eOB+pb3F2w2N6fc5qB9Ew5yIns" crossorigin="anonymous">
-	  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
-
-    <!-- jQuery library -->
+	  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"> 
+    <link rel = "stylesheet" type = "text/css" href ="<?php echo base_url(); ?>css/styles.css">
+    <script type = 'text/javascript' src = "<?php echo base_url();?>js/script.js"></script>
+    
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
-    <!-- Popper JS -->
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
 
-    <!-- Latest compiled JavaScript -->
+    
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
 </head>
 <body>
@@ -26,7 +27,7 @@
   </button>
   <div class="collapse navbar-collapse" id="navbar1">
     <ul class="navbar-nav ml-auto"> 
-<li class="nav-item active">
+<li class="nav-item">
 <a class="nav-link" href="<?=base_url('/user/');?>">Inicio<span class="sr-only">(current)</span></a>
 </li>
 <li class="nav-item dropdown">

@@ -12,7 +12,7 @@ foreach ($cargos->result() as $value) {?>
   <div class="card-body">
     <h5 class="card-title">Descripción</h5>
     <p class="card-text"><?=$value->descripcion?></p>
-    <center><a href="<?= base_url('user/elimarCargoDeseos/').$value->idCargo?>" class="btn btn-danger">Eliminar de mi lista de deseos</a></center>
+    <center><a href="<?= base_url('user/eliminarCargoDeseos/').$value->idCargo?>" class="btn btn-danger">Eliminar de mi lista de deseos</a></center>
   </div>
   </div>
   </div>

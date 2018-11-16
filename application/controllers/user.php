@@ -18,7 +18,7 @@ class User extends CI_Controller {
 		}
 		
     function perfilUsuario(){
-        $data['user'] = $this->sena_model->obtenerUsuario($this->session->userdata('idUsuario'));
+      $data['user'] = $this->sena_model->obtenerUsuario($this->session->userdata('idUsuario'));
     	$this->load->view('user/header');
         $this->load->view('user/perfil', $data);
     	$this->load->view('user/footer');
@@ -72,9 +72,11 @@ class User extends CI_Controller {
 
     function listaCursos(){
         $data['cursos'] = $this->sena_model->obtenerCursos();
-        $this->load->view('user/header', $data);
+        $this->load->view('user/header');
         $this->load->view('cursos/listaCursos', $data);
-        $this->load->view('user/footer', $data);
+        $this->load->view('user/footer');
+      
+
 
     }
 
@@ -90,6 +92,7 @@ class User extends CI_Controller {
         $this->load->view('cursos/cursosRecomendados', $data);
         $this->load->view('user/footer');
     }
+
 	
 	}//end of class
 ?>

@@ -8,7 +8,11 @@ class sena_model extends CI_Model {
   }
 
   function obtenerCursos(){
-    $query = $this->db->get('cursoscortossena');
+    $consult = "SELECT IdCursoCortoSena, cuse.NombreCursoCorto, cuse.DescripcionCorta,
+    NoHoras, cat.NombreCursoCorto categoria, RutaImagen url
+    from cursoscortossena cuse, categoriacursoscortos cat
+    where cuse.Categoria = cat.IdCategoriaCursoCorto";
+    $query = $this->db->query($consult);
     if ($query->num_rows() > 0) {
       return $query;
     }else{
@@ -106,7 +110,8 @@ class sena_model extends CI_Model {
   function cargarRutaCursos($idUser){
    $consult = "
     SELECT IdCursoCortoSena idCurso, cu.NombreCursoCorto nombreCurso, cacu.NombreCursoCorto categoria,
-     hoja.EstadoFinalizado finalizado, cu.DescripcionCorta descripcion, cu.RutaImagen urlimage, cu.NoHoras horas
+     hoja.EstadoFinalizado finalizado, cu.DescripcionCorta descripcion, cu.RutaImagen urlimage, cu.NoHoras horas,
+     RutaImagen url
      from usuarios u , cursoscortossena cu, hojarutacursoscortousuario hoja, categoriacursoscortos cacu
      where u.IdUsuario = Usuarios_IdUsuario and 
        CursosCortosSena_IdCursoCortoSena = IdCursoCortoSena and cu.Categoria = cacu.IdCategoriaCursoCorto
@@ -132,7 +137,8 @@ class sena_model extends CI_Model {
 
     function cursosRecomendados($id){
       $consult = "SELECT cs.IdCursoCortoSena idCurso, cs.NombreCursoCorto nombreCurso,
-      cs.DescripcionCorta descripcion, cs.NoHoras horas, cs.RutaImagen url
+      cs.DescripcionCorta descripcion, cs.NoHoras horas, cs.RutaImagen url,
+      cat.NombreCursoCorto categoria
       from usuarios u
       inner join listadeseoscargousuario lu
         on u.IdUsuario = lu.IdUsuario
@@ -142,11 +148,13 @@ class sena_model extends CI_Model {
         on ce.IdCargoEmpresa = cc.IdCargoEmpresa
       left join cursoscortossena cs
         on cc.IdCursoCorto = cs.IdCursoCortoSena
+      inner join categoriacursoscortos cat
+        on cat.IdCategoriaCursoCorto = cs.Categoria
       left join hojarutacursoscortousuario hc
         on cs.IdCursoCortoSena = hc.CursosCortosSena_IdCursoCortoSena 
         and hc.Usuarios_IdUsuario = u.IdUsuario
       where u.IdUsuario = $id
-      and hc.id is null;";
+      and hc.id is null";
 
     $query = $this->db->query($consult);
     if ($query->num_rows() > 0) {
@@ -156,6 +164,7 @@ class sena_model extends CI_Model {
     }
 
     }
+
 
   
 
