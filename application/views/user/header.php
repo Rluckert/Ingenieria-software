@@ -28,7 +28,7 @@
   <div class="collapse navbar-collapse" id="navbar1">
     <ul class="navbar-nav ml-auto"> 
 <li class="nav-item">
-<a class="nav-link" href="<?=base_url('/user/');?>">Inicio<span class="sr-only">(current)</span></a>
+<a class="nav-link" href="<?=base_url('/user/logueado');?>">Inicio<span class="sr-only">(current)</span></a>
 </li>
 <li class="nav-item dropdown">
   <a class="nav-link  dropdown-toggle" href="#" data-toggle="dropdown">Cursos&nbsp;<i class="fas fa-book"></i></a>
@@ -48,7 +48,16 @@
 
 <li class="nav-item"><a class="nav-link" href="html-components.html">Empresas&nbsp;<i class="far fa-building"></i></a></li>
 
-<li class="nav-item"><a class="nav-link" href="<?=base_url('/user/perfilUsuario/');?>">Mi perfil&nbsp;<i class="fas fa-user-cog"></i></a></li>
+<li class="nav-item dropdown">
+ 
+  <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" ">Mi perfil&nbsp;<i class="fas fa-user-cog"></i></a>
+   <ul class="dropdown-menu">
+    <li><a class="dropdown-item"  href="<?=base_url('/user/perfilUsuario/');?>">Ver mi perfil</a></li>
+    <li><a class="dropdown-item"  href="<?=base_url('/user/destruirSesion');?>">Cerrar sesión</a></li>
+    
+   </ul>
+
+</li>
 
     </ul>
   </div>

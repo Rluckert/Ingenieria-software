@@ -10,12 +10,66 @@ class User extends CI_Controller {
 	}
     
     function index(){
-		$this->load->view('user/header');
-		$this->load->view('user/footer');
-        $user = array('idUsuario'  => 1);
-        $this->session->set_userdata($user);
-
+    $this->load->view('login/login_view');
 		}
+
+    public function Registro(){
+    $this->load->view('login/formulario');
+  }
+
+   public function recibirDatos(){
+    $data = array('nombre' => $this->input->post('nombre'),
+                  'correo' => $this->input->post('correo'),
+                  'documento' => $this->input->post('documento'),
+                  'contraseña' => $this->input->post('contraseña'),
+                  'celular' => $this->input->post('celular')
+                  );
+    print_r($this->sena_model->verificarRegistro($data));
+    if ($this->sena_model->verificarRegistro($data)) {
+      redirect('user/registro');
+    }else{
+      $this->sena_model->crearUsuario($data);
+      redirect('user');
+    }
+    
+
+  }
+
+
+  public function login(){
+    $data = array('documento_l' => $this->input->post('documento_l'),
+                  'contraseña_l' => $this->input->post('contraseña_l')
+                  );
+
+    $consulta = $this->sena_model->verificarUsuario($data);
+      
+    if(!is_null($consulta)){
+      $id = $consulta->result()[0]->IdUsuario;
+      $dataUser = array('idUsuario' => $id,
+                        'logueado' => TRUE
+                      );
+      
+      $this->session->set_userdata($dataUser);
+      $this->sena_model->actualizarRegistro($data);
+      redirect(base_url('user/logueado'));
+    }else{
+      redirect(base_url('user'));
+    }
+    
+    
+  }
+
+  public function logueado(){
+    if($this->session->userdata('logueado')){
+    $this->load->view('user/header');
+    $this->load->view('user/footer');
+    }else{
+       redirect(base_url('user'));
+    }
+
+
+  }
+
 		
     function perfilUsuario(){
       $data['user'] = $this->sena_model->obtenerUsuario($this->session->userdata('idUsuario'));
@@ -91,6 +145,12 @@ class User extends CI_Controller {
         $this->load->view('user/header');
         $this->load->view('cursos/cursosRecomendados', $data);
         $this->load->view('user/footer');
+    }
+
+    function destruirSesion(){
+        session_destroy();
+        redirect(base_url('user'));
+
     }
 
 	

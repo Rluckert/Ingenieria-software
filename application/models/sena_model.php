@@ -6,6 +6,60 @@ class sena_model extends CI_Model {
   	parent:: __construct();
   	$this->load->database();
   }
+  
+
+  //------------------------- Registro y Login --------------------//
+  function crearUsuario($data){
+      date_default_timezone_set('America/Bogota');
+      $fecha_actual = date("Y-m-d H:i:s");
+
+      $this->db->insert('usuarios', array('NombreCompleto' => $data['nombre'],
+                                           'Correo' => $data['correo'],
+                                           'Identificacion' => $data['documento'],
+                                           'Clave' => $data['contraseña'],
+                                           'FechaHoraRegistro' => $fecha_actual,
+                                           'FechaHoraUltimoIngreso' => $fecha_actual,
+                                           'Celular' => $data['celular'],
+                                          ));
+    }
+
+      public function verificarRegistro($data){
+        $correo = $data['correo'];
+        $documento = $data['documento'];
+        $celular = $data['celular'];
+        $consulta = "SELECT * FROM USUARIOS WHERE Correo = '$correo' OR Identificacion = $documento OR Celular = $celular";
+        $array =  $this->db->query($consulta);
+
+        if($array->num_rows()>0){
+          return TRUE;
+        }else{
+          return FALSE;
+        }
+
+      }
+
+      public function actualizarRegistro($data){
+        date_default_timezone_set('America/Bogota');
+        $fecha_actual = date("Y-m-d H:i:s");
+
+        $this->db->set('FechaHoraUltimoIngreso', $fecha_actual);
+        $this->db->where('Identificacion', $data['documento_l']);
+        $this->db->update('usuarios');
+
+      }
+
+      public function verificarUsuario($data){
+        $identificacion = $data['documento_l'];
+        $clave = $data['contraseña_l'];
+        $consulta = "SELECT * from usuarios where Identificacion = $identificacion and Clave = '$clave'";
+        $aux = $this->db->query($consulta);
+        if($aux->num_rows() > 0){
+          return $aux;
+        }else{
+          return null;
+        }
+
+      }
 
   function obtenerCursos(){
     $consult = "SELECT IdCursoCortoSena, cuse.NombreCursoCorto, cuse.DescripcionCorta,
