@@ -27,11 +27,20 @@ foreach ($cursos->result() as $curso) {?>
         <p>Categoría: <?= $curso->categoria;?></p>
         <p>Horas: <?=$curso->horas;?></p>
         <p><?php 
+          foreach ($cargos->result() as $cargo) {
+            if ($cargo->idCurso == $curso->idCurso) {
+              echo "Cargo al que apunta este curso: ".$cargo->NombreCargo;
+            }
+          }
+
+        ?></p>
+        <p><?php 
         if ($curso->finalizado == 1) {
           echo "Estado: Finalizado";
         }else{
           echo "Estado: En progreso";
         }?></p>
+
        <center><a href="<?= base_url('user/eliminarRutaCurso/').$curso->idCurso?>" class="btn btn-danger">Eliminar de mi ruta de cursos</a></center>
           
         </div>

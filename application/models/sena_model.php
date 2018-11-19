@@ -61,6 +61,8 @@ class sena_model extends CI_Model {
 
       }
 
+      //---------------------------------------------------------------------------- ///
+
   function obtenerCursos(){
     $consult = "SELECT IdCursoCortoSena, cuse.NombreCursoCorto, cuse.DescripcionCorta,
     NoHoras, cat.NombreCursoCorto categoria, RutaImagen url
@@ -82,6 +84,20 @@ class sena_model extends CI_Model {
     }else{
       return false;
     }
+    }
+
+    function cargosPorCurso() {
+       $consulta = "SELECT NombreCursoCorto, NombreCargo, IdCursoCortoSena idCurso
+       from cursoscortossena cuse, cursoscortocargo cucar, cargosempresa ca
+       where cuse.IdCursoCortoSena = cucar.IdCursoCorto and
+       ca.IdCargoEmpresa = cucar.IdCargoEmpresa";
+       $query = $this->db->query($consulta);
+       if ($query->num_rows() > 0) {
+          return $query;
+       }else{
+        return false;
+       }
+
     }
 
   //---------------- Query usuarios ------------------

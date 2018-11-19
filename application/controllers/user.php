@@ -91,8 +91,13 @@ class User extends CI_Controller {
 
 	function cargosUsuario(){
     	$data['cargos'] = $this->sena_model->obtenerCargos($this->session->userdata('idUsuario'));
-		$this->load->view('user/header');
-        $this->load->view('user/cargos', $data);
+		  $this->load->view('user/header');
+      if ($data['cargos'] == false) {
+          $this->load->view('errorCargos');
+        }else{
+          $this->load->view('user/cargos', $data);
+      }
+     
     	$this->load->view('user/footer');
 	}
 
@@ -120,7 +125,12 @@ class User extends CI_Controller {
     function rutaDeCursos(){
 		$data['cursos'] = $this->sena_model->cargarRutaCursos($this->session->userdata('idUsuario'));
     	$this->load->view('user/header');
-    	$this->load->view('cursos/rutaDeCursos', $data);
+      if ($data['cursos'] == false) {
+          $this->load->view('errorRutaCursos');
+        }else{
+         $data['cargos'] = $this->sena_model->cargosPorCurso();
+         $this->load->view('cursos/rutaDeCursos', $data);
+      }
     	$this->load->view('user/footer');
     }
 
@@ -143,7 +153,12 @@ class User extends CI_Controller {
     function cursosRecomendados(){
         $data['cursos'] = $this->sena_model->cursosRecomendados($this->session->userdata('idUsuario'));
         $this->load->view('user/header');
-        $this->load->view('cursos/cursosRecomendados', $data);
+        if ($data['cursos'] == false) {
+          $this->load->view('errorCursosRe');
+        }else{
+         $this->load->view('cursos/cursosRecomendados', $data); 
+        }
+        
         $this->load->view('user/footer');
     }
 

@@ -2,11 +2,12 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>Sena-app</title>
+	<title>Sena</title>
 	<meta charset="utf-8">
 
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.2/css/all.css" integrity="sha384-/rXc/GQVaYpyDdyxK+ecHPVYJSN9bmVFBvjA/9eOB+pb3F2w2N6fc5qB9Ew5yIns" crossorigin="anonymous">
 	  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"> 
+    <link type="text/css" rel="stylesheet" href="<?php echo base_url(); ?>css/font-awesome.min.css" />
     <link rel = "stylesheet" type = "text/css" href ="<?php echo base_url(); ?>css/styles.css">
     <script type = 'text/javascript' src = "<?php echo base_url();?>js/script.js"></script>
     
@@ -20,8 +21,8 @@
 </head>
 <body>
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <a class="navbar-brand" href="#"> <img class="logo" src="http://bootstrap-ecommerce.com/main/images/logo-white.png" height="40"> Sena-app</a>
+<nav class="navbar navbar-expand-lg navbar-dark bg-success">
+  <a class="navbar-brand" href="#"> <img class="logo" src="<?=base_url('/img/sena_logo.png');?>" height="40"> Sena</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar1" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
