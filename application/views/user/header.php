@@ -47,7 +47,7 @@
     </ul>
 </li>
 
-<li class="nav-item"><a class="nav-link" href="html-components.html">Empresas&nbsp;<i class="far fa-building"></i></a></li>
+<li class="nav-item"><a class="nav-link" href="<?=base_url('/user/empresas');?>">Empresas&nbsp;<i class="far fa-building"></i></a></li>
 
 <li class="nav-item dropdown">
  

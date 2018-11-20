@@ -86,8 +86,24 @@ class User extends CI_Controller {
 	 	'celular' => $this->input->post('celular'));
 
 		$this->sena_model->modificarPerfil($this->session->userdata('idUsuario'), $data);
-		redirect(base_url('/user'));
+		redirect(base_url('/user'));   
 	}	
+
+  function addCargo(){
+    $idCargo = $this->uri->segment(3);
+    $idUsuario = $this->session->userdata('idUsuario');
+    if ($this->sena_model->añadirCargo($idUsuario, $idCargo)) {
+        redirect(base_url('user/cargosUsuario'));
+    }else{
+        echo "<script>
+             if (window.confirm('Este cargo ya está en su lista de deseo de cargos, favor intentar con otro.')){
+             window.location = 'http://localhost/sena/user/cargosUsuario';
+             }
+             </script>";
+    }
+ 
+
+  }
 
 	function cargosUsuario(){
     	$data['cargos'] = $this->sena_model->obtenerCargos($this->session->userdata('idUsuario'));
@@ -162,12 +178,41 @@ class User extends CI_Controller {
         $this->load->view('user/footer');
     }
 
+    /*----------------     Empresas -------------------------*/
+
+    function empresas(){
+      $data['empresas'] = $this->sena_model->listaEmpresas();
+      $data['noCargos'] = $this->sena_model->noCargosEmpresas();
+      $this->load->view('user/header');
+      $this->load->view('empresas/empresas', $data);
+      $this->load->view('user/footer');
+    }
+
+    function cargosEmpresa(){
+      $id = $this->uri->segment(3);
+      $this->load->view('user/header');
+      $data['cargos'] = $this->sena_model->cargosEmpresas($id);
+      $data['empresa'] = $this->sena_model->buscarEmpresa($id);
+
+      if ($data['cargos'] == false) {
+          echo "La empresa no tiene cargos disponibbles";
+      }else{
+          $this->load->view('empresas/cargosEmpresa', $data);
+
+      }
+      $this->load->view('user/footer');
+    }
+
+    function prueba(){
+      $this->load->view('prueba');
+    }
+
     function destruirSesion(){
         session_destroy();
         redirect(base_url('user'));
 
     }
 
-	
-	}//end of class
+	}
+	//end of class
 ?>

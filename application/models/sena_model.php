@@ -127,6 +127,30 @@ class sena_model extends CI_Model {
     
     //---------------- Query cargos ---------------------
 
+      function verificarCargo($idUser, $idCargo){
+    $consulta = "SELECT * from  listadeseoscargousuario lista
+    where lista.IdUsuario = $idUser and IdCargoEmpresa = $idCargo";
+    $query = $this->db->query($consulta);
+    if ($query->num_rows() != 0) {
+      return true;
+    }else{
+      return false;
+    }
+  } 
+
+  function añadirCargo($idUser, $idCargo){
+    date_default_timezone_set("America/Bogota");
+    if (!$this->verificarCargo($idUser, $idCargo)) {
+        $datos = array('IdUsuario' => $idUser,
+        'IdCargoEmpresa' => $idCargo, 'FechaHoraRegistro' => date('Y-m-d H:i:s'));
+        $this->db->insert('listadeseoscargousuario', $datos);
+        return true;
+    }else{
+        return false;
+    }
+
+  }
+
   function obtenerCargos($id){
     $consult = "SELECT NombreCargo cargo, ca.IdCargoEmpresa idCargo,
                 ca.DescripcionCorta descripcion
@@ -234,6 +258,69 @@ class sena_model extends CI_Model {
     }
 
     }
+
+  /*----------------------Empresas ------------- */
+
+  function buscarEmpresa($id){
+    $consulta = "SELECT e.NombreEmpresa empresa, e.RutaImagen urlImage
+    from empresas e where e.IdEmpresa = $id";
+
+   $query = $this->db->query($consulta);
+
+   if ($query->num_rows() > 0) {
+     return $query; 
+   }else{
+     false;
+   }
+  }
+
+  function listaEmpresas(){
+    $consulta = "SELECT e.IdEmpresa idEmpresa, e.NombreEmpresa nombre, e.DescripcionCorta descripcion,
+   c.NombreCiudad ciudad, caem.NombreCategoriaEmpresa categoria, e.RutaImagen url
+   from 
+   empresas e, categoriasempresa caem, ciudades c
+   where e.IdCategoria = caem.IdCategoriaEmpresa and
+   e.IdCiudad = c.IdCiudad";
+
+   $query = $this->db->query($consulta);
+
+   if ($query->num_rows() > 0) {
+     return $query; 
+   }else{
+     false;
+   }
+
+  }
+
+  function noCargosEmpresas(){
+    $consulta = "SELECT car.IdCargoEmpresa id, count(*) cantidad
+    from empresas e, cargosempresa car
+    where e.IdEmpresa = car.IdEmpresa
+    group by id";
+
+    $query = $this->db->query($consulta);
+
+   if ($query->num_rows() > 0) {
+     return $query; 
+   }else{
+     false;
+   }
+  }
+
+  function cargosEmpresas($id){
+    $consulta = " SELECT car.IdCargoEmpresa idCargo, car.NombreCargo cargo,
+    car.DescripcionCorta descripcion, car.RutaImagen url
+    from empresas e, cargosempresa car
+    where e.IdEmpresa = car.IdEmpresa and e.IdEmpresa = $id";
+    $query = $this->db->query($consulta);
+   if ($query->num_rows() > 0) {
+     return $query; 
+   }else{
+     false;
+   }
+  }
+     
+  
 
 
   
