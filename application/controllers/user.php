@@ -17,6 +17,46 @@ class User extends CI_Controller {
     $this->load->view('login/formulario');
   }
 
+  function recuperarCuenta(){
+     $this->load->view('login/clave');
+  }
+
+  function recibirRecuperar(){
+    $data = array('documento' => $this->input->post('documento'),
+                  'correo' => $this->input->post('correo')
+                  );
+    $aux = $this->sena_model->verificarCuenta($data);
+    if (!is_null($aux)) {
+       $clave = $aux->result()[0]->Clave;
+       $correo = $aux->result()[0]->Correo;
+       $configSmtp = array(
+           'protocol' => 'smtp',
+           'smtp_host' => 'in-v3.mailjet.com',
+           'smtp_port' => 587,
+           'smtp_user' => 'a17740ed2ef10bb3b6fbbd87d86248b6',
+           'smtp_pass' => '408501b5cce52ae7abb3a4cfc45c71df',
+           'mailtype' => 'html',
+           'charset' => 'utf-8',
+           'newline' => "\r\n"
+           );    
+ 
+ //cargamos la configuración para enviar con gmail
+ $this->email->initialize($configSmtp);
+ 
+ $this->email->from('rafaelluck14@hotmail.com', 'Sena-app');
+ $this->email->to($correo);
+  $this->email->subject('Recuperar contraseña');
+  $this->email->message('<h3>Has solicitado tu contraseña</h3><br><hr>'.'<h4>Tu contraseña es: '.$clave.'</h4>');
+ $this->email->send();
+ 
+ //var_dump($this->email->print_debugger());
+       
+      redirect('user');
+    }else{
+      redirect('user/recuperarCuenta');
+    }
+  }
+
    public function recibirDatos(){
     $data = array('nombre' => $this->input->post('nombre'),
                   'correo' => $this->input->post('correo'),
@@ -24,11 +64,41 @@ class User extends CI_Controller {
                   'contraseña' => $this->input->post('contraseña'),
                   'celular' => $this->input->post('celular')
                   );
-    print_r($this->sena_model->verificarRegistro($data));
+   
     if ($this->sena_model->verificarRegistro($data)) {
       redirect('user/registro');
     }else{
       $this->sena_model->crearUsuario($data);
+       $nombre = $data['nombre'];
+       $correo = $data['correo'];
+       $documento = $data['documento'];
+       $contraseña = $data['contraseña'];
+       $celular = $data['celular'];
+
+          $configSmtp = array(
+           'protocol' => 'smtp',
+           'smtp_host' => 'in-v3.mailjet.com',
+           'smtp_port' => 587,
+           'smtp_user' => 'a17740ed2ef10bb3b6fbbd87d86248b6',
+           'smtp_pass' => '408501b5cce52ae7abb3a4cfc45c71df',
+           'mailtype' => 'html',
+           'charset' => 'utf-8',
+           'newline' => "\r\n"
+           );    
+ 
+ //cargamos la configuración para enviar con gmail
+ $this->email->initialize($configSmtp);
+ 
+ $this->email->from('rafaelluck14@hotmail.com', 'Sena-app');
+ $this->email->to($correo);
+  $this->email->subject('Bienvenido/a a Sena app');
+  $this->email->message('<h3>' . $nombre . ' Gracias por registrarte en Sena app<hr>Aquí podras encontrar cientos de cargos ofrecidos por diferentes empresas además de cursos con los cuales podras aplicar a estos cargos</h3><br>
+                Tu número de documento es: ' . $documento . '.<br>Tu password es: ' . $contraseña.'<br>'.'Tu correo asociado es: '.
+                $correo.'<br>'.'Tu celular asociado es: '.$celular);
+ $this->email->send();
+ //con esto podemos ver el resultado
+ //var_dump($this->email->print_debugger());
+       
       redirect('user');
     }
     
@@ -45,8 +115,10 @@ class User extends CI_Controller {
       
     if(!is_null($consulta)){
       $id = $consulta->result()[0]->IdUsuario;
+      $nombreUsuario = $consulta->result()[0]->NombreCompleto;
       $dataUser = array('idUsuario' => $id,
-                        'logueado' => TRUE
+                        'logueado' => TRUE,
+                        'nombreUsuario' => $nombreUsuario
                       );
       
       $this->session->set_userdata($dataUser);
@@ -55,6 +127,8 @@ class User extends CI_Controller {
     }else{
       redirect(base_url('user'));
     }
+
+
     
     
   }
@@ -62,6 +136,7 @@ class User extends CI_Controller {
   public function logueado(){
     if($this->session->userdata('logueado')){
     $this->load->view('user/header');
+    $this->load->view('welcome');
     $this->load->view('user/footer');
     }else{
        redirect(base_url('user'));
@@ -86,13 +161,18 @@ class User extends CI_Controller {
 	 	'celular' => $this->input->post('celular'));
 
 		$this->sena_model->modificarPerfil($this->session->userdata('idUsuario'), $data);
-		redirect(base_url('/user'));   
+		redirect(base_url('/user/perfilUsuario'));   
 	}	
 
   function addCargo(){
     $idCargo = $this->uri->segment(3);
     $idUsuario = $this->session->userdata('idUsuario');
     if ($this->sena_model->añadirCargo($idUsuario, $idCargo)) {
+        $cursos = $this->sena_model->cursosCargosPorId($idCargo);
+        foreach ($cursos->result() as $curso) {
+          $this->sena_model->añadirRutaCursos($idUsuario, $curso->idCurso);
+        }
+
         redirect(base_url('user/cargosUsuario'));
     }else{
         echo "<script>
@@ -191,6 +271,7 @@ class User extends CI_Controller {
     function cargosEmpresa(){
       $id = $this->uri->segment(3);
       $this->load->view('user/header');
+      $data['cursos'] = $this->sena_model->cursosCargos();
       $data['cargos'] = $this->sena_model->cargosEmpresas($id);
       $data['empresa'] = $this->sena_model->buscarEmpresa($id);
 

@@ -93,18 +93,18 @@ a{
    
    <div class="jumbotron boxlogin">
 
-    <?= form_open('/user/login');  ?>
+    <?= form_open('/empresas/login');  ?>
     <?php
     $documento_l = array(
-      'name' => 'documento_l',
-      'placeholder' => '&#128179; documento de identidad',
+      'name' => 'nit',
+      'placeholder' => '&#128179; nit de la empresa',
       'type' => 'number',
       'class' => 'form-control input-lg phcenter',
       'required' => ''
       
     );
     $contraseña_l = array(
-      'name' => 'contraseña_l',
+      'name' => 'clave',
       'placeholder' => '&#128272; contraseña',
       'type' => 'password',
       'class' => 'form-control  input-lg phcenter',
@@ -125,8 +125,7 @@ a{
      <?= form_input($contraseña_l) ?>
      <br>
      <?= form_submit($datoIngresado,'') ?>
-     <p><a href="<?= base_url().'user/registro'?>"> Registrarme</a></p>
-     <p><a href="<?= base_url().'user/recuperarCuenta'?>"> ¿Olvidaste tu contaseña?</a></p>
+     <p><a href="<?= base_url().'empresas/registro'?>"> Registrarme</a></p>
      
     <?= form_close(); ?>
      </center>

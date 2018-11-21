@@ -58,6 +58,20 @@ class sena_model extends CI_Model {
         }else{
           return null;
         }
+      }
+
+        public function verificarCuenta($data){
+        $documento = $data['documento'];
+        $correo = $data['correo'];
+        $consulta = "SELECT * from usuarios where Identificacion = $documento and Correo = '$correo'";
+        $aux = $this->db->query($consulta);
+        if($aux->num_rows() > 0){
+          return $aux;
+        }else{
+          return null;
+        }
+
+
 
       }
 
@@ -319,6 +333,34 @@ class sena_model extends CI_Model {
      false;
    }
   }
+
+  function cursosCargos(){
+     $consulta = "SELECT NombreCursoCorto, NombreCargo cargo, IdCursoCortoSena idCurso, ca.IdCargoEmpresa idCargo
+      from cursoscortossena cuse, cursoscortocargo cucar, cargosempresa ca
+      where cuse.IdCursoCortoSena = cucar.IdCursoCorto and
+      ca.IdCargoEmpresa = cucar.IdCargoEmpresa";
+      $query = $this->db->query($consulta);
+     if ($query->num_rows() > 0) {
+       return $query; 
+     }else{
+       false;
+     }
+  }
+
+  function cursosCargosPorId($id){
+     $consulta = "SELECT NombreCursoCorto, NombreCargo cargo, IdCursoCortoSena idCurso, ca.IdCargoEmpresa idCargo
+      from cursoscortossena cuse, cursoscortocargo cucar, cargosempresa ca
+      where cuse.IdCursoCortoSena = cucar.IdCursoCorto and
+      ca.IdCargoEmpresa = cucar.IdCargoEmpresa and ca.IdCargoEmpresa = $id";
+      $query = $this->db->query($consulta);
+     if ($query->num_rows() > 0) {
+       return $query; 
+     }else{
+       false;
+     }
+  }
+
+
      
   
 

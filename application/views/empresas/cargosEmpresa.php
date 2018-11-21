@@ -32,6 +32,17 @@ foreach ($cargos->result() as $cargo) {?>
         <div class="col-md-auto text-center">
         <br><br>
         <p><h6><?=$cargo->descripcion;?></h6></p>
+        <h6>Cursos con los cuales puedes aspirar a este cargo: </h6>
+        <ul class="list-group">
+          <?php foreach ($cursos->result() as $curso){
+            if ($cargo->idCargo == $curso->idCargo) {
+              echo '<li class="list-group-item">'.$curso->NombreCursoCorto.'</li>';
+            }
+            }
+            
+            ?>
+        </ul>
+        <br>
         <a href="<?= base_url('user/addCargo/').$cargo->idCargo?>" class="btn btn-primary">Agregar a mi lista de deseos</a>
           
         </div>

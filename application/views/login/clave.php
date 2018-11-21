@@ -93,40 +93,38 @@ a{
    
    <div class="jumbotron boxlogin">
 
-    <?= form_open('/user/login');  ?>
+    <?= form_open('/user/recibirRecuperar');  ?>
     <?php
-    $documento_l = array(
-      'name' => 'documento_l',
-      'placeholder' => '&#128179; documento de identidad',
+    $documento = array(
+      'name' => 'documento',
+      'placeholder' => '&#128179; Documento de identidad',
       'type' => 'number',
       'class' => 'form-control input-lg phcenter',
       'required' => ''
       
     );
-    $contraseña_l = array(
-      'name' => 'contraseña_l',
-      'placeholder' => '&#128272; contraseña',
-      'type' => 'password',
+    $correo = array(
+      'name' => 'correo',
+      'placeholder' => '&#128272; Correo',
+      'type' => 'email',
       'class' => 'form-control  input-lg phcenter',
       'required' => ''
     );
     $datoIngresado = array(
       'name' => 'datoIngresado',
       'class' => 'btn btn-success',
-      'value' => 'Ingresar'
+      'value' => 'Recuperar contraseña'
     );
 
      ?>
      <center>
       <img src="https://sistemas01.ugel03.gob.pe/consultaplazas/resource/admin/img/iconoLogin.png">
       <p></p>
-     <?= form_input($documento_l) ?>
+     <?= form_input($documento) ?>
      <br>
-     <?= form_input($contraseña_l) ?>
+     <?= form_input($correo) ?>
      <br>
      <?= form_submit($datoIngresado,'') ?>
-     <p><a href="<?= base_url().'user/registro'?>"> Registrarme</a></p>
-     <p><a href="<?= base_url().'user/recuperarCuenta'?>"> ¿Olvidaste tu contaseña?</a></p>
      
     <?= form_close(); ?>
      </center>
