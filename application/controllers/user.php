@@ -261,6 +261,7 @@ class User extends CI_Controller {
     /*----------------     Empresas -------------------------*/
 
     function empresas(){
+      $data['categorias'] = $this->sena_model->categorias();
       $data['empresas'] = $this->sena_model->listaEmpresas();
       $data['noCargos'] = $this->sena_model->noCargosEmpresas();
       $this->load->view('user/header');
@@ -282,6 +283,25 @@ class User extends CI_Controller {
 
       }
       $this->load->view('user/footer');
+    }
+
+    function empresasCategoria(){
+      $this->load->view('user/header');
+      $categoria = $this->input->post('categoria');
+      $data['categorias'] = $this->sena_model->categorias();
+      $data['empresas'] = $this->sena_model->empresasPorCategoria($categoria);
+      $data['noCargos'] = $this->sena_model->noCargosEmpresas();
+      
+
+      
+      if ($data['empresas'] == false) {
+         $this->load->view('noCategoriasEmpresas');
+      }else{
+         $this->load->view('empresas/empresas', $data);
+      }
+      
+      $this->load->view('user/footer');
+
     }
 
     function prueba(){

@@ -306,6 +306,24 @@ class sena_model extends CI_Model {
 
   }
 
+   function empresasPorCategoria($categoria){
+   $consulta = "SELECT e.IdEmpresa idEmpresa, e.NombreEmpresa nombre, e.DescripcionCorta descripcion,
+   c.NombreCiudad ciudad, caem.NombreCategoriaEmpresa categoria, e.RutaImagen url
+   from 
+   empresas e, categoriasempresa caem, ciudades c
+   where e.IdCategoria = caem.IdCategoriaEmpresa and
+   e.IdCiudad = c.IdCiudad and caem.IdCategoriaEmpresa = $categoria";
+
+   $query = $this->db->query($consulta);
+
+   if ($query->num_rows() > 0) {
+     return $query; 
+   }else{
+     false;
+   }
+
+  }
+
   function noCargosEmpresas(){
     $consulta = "SELECT car.IdCargoEmpresa id, count(*) cantidad
     from empresas e, cargosempresa car
@@ -360,7 +378,17 @@ class sena_model extends CI_Model {
      }
   }
 
+public function categorias(){
+        $consulta = "SELECT NombreCategoriaEmpresa nombre, IdCategoriaEmpresa id from categoriasempresa";
+        $query =  $this->db->query($consulta);
 
+        if($query->num_rows()>0){
+          return $query;
+        }else{
+          return FALSE;
+        }
+
+         }
      
   
 

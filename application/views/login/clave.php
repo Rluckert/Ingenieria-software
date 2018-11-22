@@ -107,7 +107,7 @@ a{
       'name' => 'correo',
       'placeholder' => '&#128272; Correo',
       'type' => 'email',
-      'class' => 'form-control  input-lg phcenter',
+      'class' => 'form-control input-lg phcenter',
       'required' => ''
     );
     $datoIngresado = array(
@@ -123,7 +123,9 @@ a{
      <?= form_input($documento) ?>
      <br>
      <?= form_input($correo) ?>
-     <br>
+     
+     <p align="justify"><h6 align="left" style=" padding:20px"> Se le será enviado un correo con su contraseña al email registrado con este usuario.</h6></p>
+    
      <?= form_submit($datoIngresado,'') ?>
      
     <?= form_close(); ?>

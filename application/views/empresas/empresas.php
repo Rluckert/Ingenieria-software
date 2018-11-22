@@ -1,5 +1,23 @@
+<?php
+$enviar = array(
+          'name' => 'Filtrar',
+          'class' => 'btn btn-primary',
+          'value' => 'Filtrar'
+        ); 
+ ?>
 
+<?= form_open('/user/empresasCategoria', array('class' => 'form-inline')); ?>
+        <select name="categoria" class="form-control">
+        <?php 
+         foreach ($categorias->result() as $categoria) {
+           echo "<option value='$categoria->id'>".$categoria->nombre."</option>";
+         }
+        ?>        
+       </select>
 
+    <?= form_submit($enviar,'') ?>   
+    <a class="btn btn-danger" href="<?= base_url().'user/empresas'?>">Ver todas</a>   
+<?= form_close(); ?>       
 <div class="accordion" id="accordionExample">
 
 <?php 
